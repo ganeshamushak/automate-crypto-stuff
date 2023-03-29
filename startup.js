@@ -28,7 +28,7 @@ async function detectActivity() {
 
     const nextCollection = await getCookieValue("nextCollection", "https://www.coingecko.com");
 
-    if (nextCollection == undefined || new Date(parseInt(nextCollection)) < (new Date()).getTime()) {
+    if (nextCollection == "NaN" || nextCollection == undefined || new Date(parseInt(nextCollection)) < (new Date()).getTime()) {
       setCookie("alreadyOpened", "yes");
       chrome.tabs.create({ url: configurations.collectCandyUrl });
     }

@@ -13,6 +13,7 @@ const collectCGCandy = () => {
     var button = $(form).find("button")[0];
     $(button).trigger("click");
     chrome.runtime.sendMessage({ data: "CandyCollected" });
+    initiateCloser();
   }
 };
 
@@ -37,15 +38,19 @@ const makeCoinGeckoDomReady = () => {
       collectCGCandy();
     } else {
       // countdownTimer == 1 => Meaning Candy has been collected.
-      setCookie("alreadyOpened", "no");
-      var timeRemaining = $('#next-daily-reward-countdown-timer').text();
-      var splited = timeRemaining.split(':');
-      var now = new Date();
-      const future = new Date(now.getTime() + (parseInt(splited[0]) * 60 * 60 + parseInt(splited[1]) * 60 + parseInt(splited[2])) * 1000);
-      setCookie('nextCollection', future.getTime());
-      close();
+      initiateCloser();
     }
   }, 1000);
+};
+
+const initiateCloser = () => {
+  setCookie("alreadyOpened", "no");
+  var timeRemaining = $('#next-daily-reward-countdown-timer').text();
+  var splited = timeRemaining.split(':');
+  var now = new Date();
+  const future = new Date(now.getTime() + (parseInt(splited[0]) * 60 * 60 + parseInt(splited[1]) * 60 + parseInt(splited[2])) * 1000);
+  setCookie('nextCollection', future.getTime());
+  close();
 };
 
 /**
